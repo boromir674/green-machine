@@ -1,6 +1,7 @@
 import os
 import logging.config
 from flask import Flask, Blueprint
+from flask_cors import CORS
 
 from .config import env2config
 from .api.restplus import api
@@ -50,8 +51,11 @@ def initialize_app(flask_app, environment):
 
 def get_logger_n_app(environment='development'):
     app = Flask(__name__)
+    initialize_app(app, environment)
+    CORS(app)
+
     p = os.path.join(basedir, '../logging.conf')
     logging.config.fileConfig(p)
     logger = logging.getLogger(__name__)
-    initialize_app(app, environment)
+
     return logger, app
