@@ -70,15 +70,15 @@ def mapid2specs(mapid):
 
 
 def create_dataset(dataset_specs):
-    dt = WM.create_weedataset(strains_jl, dataset_specs['_id'])
-    dt.use_variables(dataset_specs['active_vars'])
-    dt.clean()
-    _ = WM.get_feature_vectors(dt)
+    dataset = WM.create_weedataset(strains_jl, dataset_specs['_id'])
+    dataset.use_variables(dataset_specs['active_vars'])
+    dataset.clean()
+    _ = WM.get_feature_vectors(dataset)
     WM.save_dataset(dataset_specs['_id'])
     return {
-        'size': len(dt),
-        'active_vars': dt.active_variables,
-        'vec_len': len(dt.datapoints[0])
+        'size': len(dataset),
+        'active_vars': dataset.active_variables,
+        'vec_len': len(dataset.datapoints[0])
     }
 
 
