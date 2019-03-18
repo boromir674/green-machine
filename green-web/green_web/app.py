@@ -7,6 +7,8 @@ from .config import env2config
 from .api.restplus import api
 from .api.data.endpoints.info import ns as data_info_ns
 from .api.strain.endpoints.info import ns as strain_info_ns
+from .api.bmus.endpoints.info import ns as bmus_info_ns
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -30,6 +32,7 @@ def initialize_app(flask_app, environment):
     api.init_app(blueprint)
     api.add_namespace(strain_info_ns)
     api.add_namespace(data_info_ns)
+    api.add_namespace(bmus_info_ns)
     from .api.business import WM
     WM.datasets_dir = flask_app.config['DATASETS_DIR']
     WM.load_dataset(flask_app.config['DATASET_ID'] + '-clean.pk')

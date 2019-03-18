@@ -25,6 +25,10 @@ class WeedMaster:
         self.map_manager = MapMakerManager(self, graphs_dir)
         self.lexicon = WeedLexicon()
 
+    def strain_names(self, coordinates):
+        g = ((self.dt.datapoint_index2_id[_], self.som.bmus[_]) for _ in range(len(self.dt)))
+        return [n for n, c in g if c[0] == coordinates['x'] and c[1] == coordinates['y']]
+
     @property
     def dt(self):
         """

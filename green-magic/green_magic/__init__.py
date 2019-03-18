@@ -14,7 +14,7 @@ my_dir = os.path.dirname(os.path.realpath(__file__))
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M',
-                    filename=os.path.join(my_dir, '../gm.log'),
+                    filename=os.path.join(my_dir, './gm.log'),
                     filemode='w')
 
 # define a Handler which writes INFO messages or higher to the sys.stderr

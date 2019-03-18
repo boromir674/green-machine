@@ -56,3 +56,16 @@ strain_coordinates = api.model('A strain\'s coordinates on a self organizing map
 strain_id_model = api.model('A cannabis strain ID', {
     'id': fields.String(readOnly=True, description='The unique identifier of a strain', default='silver-haze'),
 })
+
+# post request expect
+bmu_node_coordinates = api.model("A som bmus' coordinates", {
+    'x': fields.Integer(readOnly=True, description='The x coordinate'),
+    'y': fields.Integer(readOnly=True, description='The y coordinate'),
+})
+
+# marshall with
+strains_list = api.model('Strains list from som bmu node', {
+    'strains-list': fields.List(fields.String, readonly=True, description='The IDs of strains belonging to the bmu nde with the given coordinates'),
+})
+
+# fields.List(fields.String, readOnly=True, description='The set of variables'),

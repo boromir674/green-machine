@@ -46,6 +46,10 @@ def get_strain_coordinates(strain_id):
     }
 
 
+def get_strains_names(coordinates):
+    return {'strains-list': WM.strain_names(coordinates)}
+
+
 def create_som(som_specs_model):
     specs_string = '.'.join(map(lambda x: str(x), (som_specs_model['type'], som_specs_model['grid'], som_specs_model['rows'], som_specs_model['columns'], som_specs_model['initialization'])))
     som = WM.map_manager.get_som(specs_string)
