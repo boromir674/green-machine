@@ -48,7 +48,7 @@ class BaseConfig(object):
 class DevelopmentConfig(BaseConfig):
     """Development configurations"""
     SECRET_CONFIG = 'dev-config.py'
-    SERVER_NAME = "localhost:5556"
+    SERVER_NAME = "localhost:5550"
     DEBUG = True
     DATASET_ID = 'new-dt'
     DATASETS_DIR = os.path.join(basedir, '../data')
