@@ -22,8 +22,8 @@ SM = strain_master
 # vectors = SM.get_feature_vectors(SM.dt)
 # _ = SM.get_feature_vectors(SM.dt)
 
-# cls = SM.cluster_manager.get_clusters(som, nb_clusters=10)
-# cls.print_clusters(threshold=7, prec=3)
+# clusters = SM.cluster_manager.get_clusters(som, nb_clusters=10)
+# clusters.print_clusters(threshold=7, prec=3)
 
 # SM.save_dataset(DATASET_ID)
 

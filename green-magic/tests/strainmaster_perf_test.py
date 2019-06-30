@@ -46,7 +46,7 @@ active_vars = ['type', 'effects', 'medical', 'negatives', 'flavors']
 sd = 'test'
 strain_master = None
 som = None
-cls = None
+clusters = None
 if not os.path.exists(datasets_dir):
     os.makedirs(datasets_dir)
 if not os.path.exists(graphs_dir):
