@@ -14,7 +14,7 @@ attributes = ('effects', 'medical', 'negatives')
 grow_info = ('difficulty', 'height', 'yield', 'flowering', 'stretch')
 
 
-class Weedataset:
+class StrainDataset:
 
     def __str__(self):
         incomplete = self.get_nb_missing('any')
@@ -144,6 +144,6 @@ def get_generator(iterable):
 
 def create_dataset_from_pickle(a_file):
     with open(a_file, 'rb') as pickle_file:
-        weedataset = pickle.load(pickle_file)
-        assert isinstance(weedataset, Weedataset)
-    return weedataset
+        strain_dataset = pickle.load(pickle_file)
+        assert isinstance(strain_dataset, StrainDataset)
+    return strain_dataset

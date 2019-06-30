@@ -75,19 +75,19 @@ class ModelQualityReporter(object):
         self.true_pred = (su, len(strain_types))
         return self
 
-# def get_model_quality_reporter(weedataset_id):
-#     if weedataset_id not in cls_evals:
-#         cls_evals[weedataset_id] = ModelQualityReporter(strain_master[weedataset_id].dt.id2datapoint, strain_master[weedataset_id].dt.full_df.loc)
-#     return cls_evals[weedataset_id]
+# def get_model_quality_reporter(strain_dataset_id):
+#     if strain_dataset_id not in cls_evals:
+#         cls_evals[strain_dataset_id] = ModelQualityReporter(strain_master[strain_dataset_id].dt.id2datapoint, strain_master[strain_dataset_id].dt.full_df.loc)
+#     return cls_evals[strain_dataset_id]
 
 # holds a ModelQualityreporter per dataset id
 cls_evals = {}
 
 
-def get_model_quality_reporter(weedmaster, weedataset_id):
-    if weedataset_id not in cls_evals:
-        cls_evals[weedataset_id] = ModelQualityReporter(weedmaster[weedataset_id].dt.id2datapoint, weedmaster[weedataset_id].dt.full_df.loc)
-    return cls_evals[weedataset_id]
+def get_model_quality_reporter(strain_master, strain_dataset_id):
+    if strain_dataset_id not in cls_evals:
+        cls_evals[strain_dataset_id] = ModelQualityReporter(strain_master[strain_dataset_id].dt.id2datapoint, strain_master[strain_dataset_id].dt.full_df.loc)
+    return cls_evals[strain_dataset_id]
 
 
 def get_cluster_label(cluster, variable):

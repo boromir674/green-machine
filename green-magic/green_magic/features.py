@@ -25,11 +25,11 @@ class WeedLexicon(object):
 
 class FeatureComputer:
 
-    def __init__(self, weedataset):
+    def __init__(self, strain_dataset):
         """
-        :type weedataset: weedata.Weedataset
+        :type strain_dataset: strain_dataset.StrainDataset
         """
-        self._dt = weedataset
+        self._dt = strain_dataset
         self.feat_defs = [get_encoding_type(feat_name) + '#' + feat_name for feat_name in self._dt.generate_variables()]
 
         self.variable2extractor = {'type': type_f,

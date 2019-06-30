@@ -8,13 +8,13 @@ base_strain = api.model('A cannabis strain information', {
     'flavors': fields.List(fields.String, description='The mixture of flavors the strain contains')
 })
 
-dataset_info = api.model('A Weedataset information', {
+dataset_info = api.model('A StrainDataset information', {
     'size': fields.Integer(readOnly=True, description='The number of datapoints'),
     'active_vars': fields.List(fields.String, readOnly=True, description='The set of variables'),
     'vec_len': fields.Integer(readOnly=True, description='The encoded vectors length'),
 })
 
-dataset_specs = api.model('A Weedataset specs model', {
+dataset_specs = api.model('A StrainDataset specs model', {
     '_id': fields.String(readOnly=True, description='The unique identifier of a strain dataset'),
     'active_vars': fields.List(fields.String, readOnly=True, description='The set of variables', default=['type', 'effects', 'medical', 'negatives', 'flavors'])
 })

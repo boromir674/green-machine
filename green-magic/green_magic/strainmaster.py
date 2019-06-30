@@ -5,14 +5,14 @@ import pickle
 import numpy as np
 from .features import WeedLexicon
 from .map_maker import MapMakerManager
-from .weedata import Weedataset, create_dataset_from_pickle
+from .strain_dataset import StrainDataset, create_dataset_from_pickle
 from .clustering import get_model_quality_reporter
 
 import logging
 _log = logging.getLogger(__name__)
 
 
-class WeedMaster:
+class StrainMaster:
 
     def __init__(self, datasets_dir=None, graphs_dir=None):
         self.datasets_dir = datasets_dir
@@ -32,9 +32,9 @@ class WeedMaster:
     @property
     def dt(self):
         """
-        Returns the currently selected/active dataset as a reference to a Weedataset object.\n
+        Returns the currently selected/active dataset as a reference to a StrainDataset object.\n
         :return: the reference to the dataset
-        :rtype: .weedata.Weedataset
+        :rtype: .strain_dataset.StrainDataset
         """
         return self.id2dataset[self.selected_dt_id]
 
@@ -51,21 +51,21 @@ class WeedMaster:
     def model_quality(self):
         return get_model_quality_reporter(self, self.selected_dt_id)
 
-    def get_feature_vectors(self, weedataset, list_of_variables=None):
+    def get_feature_vectors(self, strain_dataset, list_of_variables=None):
         """
         This method must be called
-        :param weedataset:
+        :param strain_dataset:
         :param list_of_variables:
         :return:
         """
         if not list_of_variables:
-            return weedataset.load_feature_vectors()
+            return strain_dataset.load_feature_vectors()
         else:
-            weedataset.use_variables(list_of_variables)
-            return weedataset.load_feature_vectors()
+            strain_dataset.use_variables(list_of_variables)
+            return strain_dataset.load_feature_vectors()
 
-    def create_weedataset(self, jl_file, dataset_id, ffilter=''):
-        data_set = Weedataset(dataset_id)
+    def create_strain_dataset(self, jl_file, dataset_id, ffilter=''):
+        data_set = StrainDataset(dataset_id)
         with open(jl_file, 'r') as json_lines_file:
             for line in json_lines_file:
                 strain_dict = json.loads(line)
@@ -84,14 +84,14 @@ class WeedMaster:
         return data_set
 
     def load_dataset(self, a_file):
-        weedataset = create_dataset_from_pickle(self.datasets_dir + '/' + a_file)
-        self.id2dataset[weedataset.name] = weedataset
-        self.selected_dt_id = weedataset.name
-        _log.info("Loaded dataset with id '{}'".format(weedataset.name))
-        return weedataset
+        strain_dataset = create_dataset_from_pickle(self.datasets_dir + '/' + a_file)
+        self.id2dataset[strain_dataset.name] = strain_dataset
+        self.selected_dt_id = strain_dataset.name
+        _log.info("Loaded dataset with id '{}'".format(strain_dataset.name))
+        return strain_dataset
 
-    def save_dataset(self, weedataset_id):
-        dataset = self.id2dataset[weedataset_id]
+    def save_dataset(self, strain_dataset_id):
+        dataset = self.id2dataset[strain_dataset_id]
         if dataset.has_missing_values:
             name = '-not-clean'
         else:
@@ -100,10 +100,10 @@ class WeedMaster:
         try:
             with open(name, 'wb') as pickled_dataset:
                 pickle.dump(dataset, pickled_dataset, protocol=pickle.HIGHEST_PROTOCOL)
-            _log.info("Saved dataset with id '{}' as {}".format(weedataset_id, name))
+            _log.info("Saved dataset with id '{}' as {}".format(strain_dataset_id, name))
         except RuntimeError as e:
             _log.debug(e)
-            _log.info("Failed to save dataset wtih id {}".format(weedataset_id))
+            _log.info("Failed to save dataset wtih id {}".format(strain_dataset_id))
             pass
 
     def __getitem__(self, wd_id):

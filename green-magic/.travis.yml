@@ -5,11 +5,11 @@ python:
 
 before_install:
   - chmod +x install-nltk-resources.py
-  - chmod +x green_magic/tests/weedmaster_test.py
+  - chmod +x green_magic/tests/strainmaster_test.py
 
 install:
   - pip install .
  
 script:
   - python install-nltk-resources.py
-  - python green_magic/tests/weedmaster_test.py
+  - python green_magic/tests/strainmaster_test.py

@@ -1,12 +1,12 @@
 import os
-from .weedata import Weedataset
-from .weedmaster import WeedMaster
+from .strain_dataset import StrainDataset
+from .strainmaster import StrainMaster
 from .clustering import ClusteringFactory, get_type_separation_eval
 
 import logging
 
-strain_master = WeedMaster()
-clustering_factory = ClusteringFactory(strain_master)
+strain_master = StrainMaster()
+# clustering_factory = ClusteringFactory(strain_master)
 extr_eval = get_type_separation_eval()
 
 my_dir = os.path.dirname(os.path.realpath(__file__))

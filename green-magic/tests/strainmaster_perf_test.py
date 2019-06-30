@@ -2,7 +2,7 @@ import timeit
 
 
 def import_modules():
-    from green_magic import WeedMaster
+    from green_magic.strainmaster import StrainMaster
     from green_magic.clustering import ClusteringFactory, DistroReporter, get_model_quality_reporter
 
 
@@ -22,15 +22,15 @@ import_modules()
 
 
 def create_dataset():
-    wm = WeedMaster(datasets_dir=datasets_dir, graphs_dir=graphs_dir)
-    dt = wm.create_weedataset(dt_path, wd)
+    sm = StrainMaster(datasets_dir=datasets_dir, graphs_dir=graphs_dir)
+    dt = sm.create_strain_dataset(dt_path, wd)
 
 
 def create_dataset_time():
     SETUP_CODE = '''
 import os
 import shutil
-from green_magic import WeedMaster
+from green_magic.strainmaster import StrainMaster
 from green_magic.clustering import ClusteringFactory, DistroReporter, get_model_quality_reporter
 from __main__ import create_dataset
 
@@ -43,7 +43,7 @@ test_file = 'strain-test-set-100.jl'
 dt_path = my_dir + '/' + test_file
 all_vars = ['type', 'effects', 'medical', 'negatives', 'flavors']
 active_vars = ['type', 'effects', 'medical', 'negatives', 'flavors']
-wd = 'test'
+sd = 'test'
 strain_master = None
 som = None
 cls = None
@@ -51,11 +51,11 @@ if not os.path.exists(datasets_dir):
     os.makedirs(datasets_dir)
 if not os.path.exists(graphs_dir):
     os.makedirs(graphs_dir)
-strain_master = WeedMaster(datasets_dir=datasets_dir, graphs_dir=graphs_dir)
+strain_master = StrainMaster(datasets_dir=datasets_dir, graphs_dir=graphs_dir)
     '''
 
     TEST_CODE = '''
-dt = strain_master.create_weedataset(dt_path, wd)
+dt = strain_master.create_strain_dataset(dt_path, sd)
         '''
     times = timeit.repeat(setup=SETUP_CODE,
                           stmt=TEST_CODE,

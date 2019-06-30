@@ -14,7 +14,7 @@ ns = api.namespace('data', description='Data operations related to cannabis stra
 
 
 @ns.route('/dataset_new')
-# @api.doc(params={'dataset_id': 'A new weedataset id'})
+# @api.doc(params={'dataset_id': 'A new strain_dataset id'})
 class DatasetResource(Resource):
     """Stores/deletes strains, creates/loads/deletes datasets"""
 

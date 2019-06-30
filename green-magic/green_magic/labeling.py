@@ -25,7 +25,7 @@ def get_labeler_instance(labeler_type):
 
 class Labeler:
 
-    def generate_labels(self, weedataset):
+    def generate_labels(self, strain_dataset):
         raise NotImplementedError
 
 
@@ -36,11 +36,11 @@ class StrainTypeLabeler(Labeler):
     def __init__(self):
         self.strain_type2color = {'hybrid': 'green', 'indica': 'purple', 'sativa': 'red'}
 
-    def generate_labels(self, weedataset):
-        for index in range(len(weedataset.datapoints)):
+    def generate_labels(self, strain_dataset):
+        for index in range(len(strain_dataset.datapoints)):
             # print(index)
-            # print(weedataset.datapoint_index2_id[index])
-            yield self.strain_type2color[weedataset.loc[weedataset.datapoint_index2_id[index]]['type']]
+            # print(strain_dataset.datapoint_index2_id[index])
+            yield self.strain_type2color[strain_dataset.loc[strain_dataset.datapoint_index2_id[index]]['type']]
 
 
 class Labeler(object):

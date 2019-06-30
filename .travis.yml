@@ -1,0 +1,17 @@
+language: python
+
+python:
+  - "3.5"
+
+before_install:
+  - chmod +x green-magic/green_magic/tests/strainmaster_test.py
+  - chmod +x green-web/green_web/tests/test_server.py
+  - chmod +x install-nltk-resources.py
+
+install:
+  - pip install .
+
+script:
+  - python install-nltk-resources.py
+  - python green_web/tests/test_server.py
+  - python green_magic/tests/strainmaster_test.py

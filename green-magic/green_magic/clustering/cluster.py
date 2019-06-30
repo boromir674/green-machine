@@ -7,7 +7,7 @@ from somoclu import Somoclu
 
 from green_magic.features import enctype2features
 from green_magic.utils import extract_value, gen_values, generate_id_tokens
-from green_magic import weedmaster
+from green_magic import strain_master
 
 
 class Clustering(object):
@@ -217,18 +217,18 @@ def distance(vec1, vec2, metric='euclidean'):
 
 class ClusteringFactory(object):
 
-    def __init__(self, weedmaster):
-        self._wm = weedmaster
+    def __init__(self, strain_master):
+        self._sm = strain_master
         self.algorithms = {
             'kmeans': lambda x, y: KMeans(n_clusters=x, random_state=y),
             'affinity-propagation': lambda x, y: AffinityPropagation()
         }
 
     def get_grouping(self, members, active_vars):
-        """Uses the currently selected strain dataset id in the weedmaster"""
+        """Uses the currently selected strain dataset id in the strainmaster"""
         gr = Grouping(members, active_vars)
-        gr.compute_distros(self._wm.dt.full_df.loc)
-        gr.compute_tfs(self._wm.dt.full_df.loc)
+        gr.compute_distros(self._sm.dt.full_df.loc)
+        gr.compute_tfs(self._sm.dt.full_df.loc)
         return gr
 
     def create_clusters(self, som, algorithm, nb_clusters=8, ngrams=1, random_state=None, vars=None):
@@ -247,17 +247,17 @@ class ClusteringFactory(object):
         :rtype: Clustering
         """
         id2members = {}  # cluster id => members set mapping
-        map_id = self._wm.map_manager.map_obj2id[som]
+        map_id = self._sm.map_manager.map_obj2id[som]
         dt_id = _extract_dataset_id(map_id)
         if vars is None:
-            vars = tuple((var for var in self._wm.id2dataset[dt_id].generate_variables()))
+            vars = tuple((var for var in self._sm.id2dataset[dt_id].generate_variables()))
         if isinstance(som, Somoclu):
             som.cluster(algorithm=self.algorithms[algorithm](nb_clusters, random_state))
             for i, arr in enumerate(som.bmus):  # iterate through the array of shape [nb_datapoints, 2]. Each row is the coordinates of the neuron the datapoint gets attributed to (closest distance)
                 attributed_cluster = som.clusters[arr[0], arr[1]]  # >= 0
                 if attributed_cluster not in id2members:
                     id2members[attributed_cluster] = set()
-                id2members[attributed_cluster].add(self._wm.id2dataset[dt_id].datapoint_index2_id[i])
+                id2members[attributed_cluster].add(self._sm.id2dataset[dt_id].datapoint_index2_id[i])
         else:
             raise Exception("Clustering is not supported for Self Organizing Map of type '{}'".format(type(som)))
         b = ''
@@ -265,7 +265,7 @@ class ClusteringFactory(object):
         for j in range(som.umatrix.shape[0]):
             b += ' '.join(' '*(max_len-len(str(i))) + str(i) for i in som.clusters[j, :]) + '\n'
         clustering = Clustering(id2members, vars, map_id, b, dt_id, self)
-        clustering.compute_stats(self._wm.id2dataset[dt_id].full_df.loc, ngrams=ngrams)
+        clustering.compute_stats(self._sm.id2dataset[dt_id].full_df.loc, ngrams=ngrams)
         print('Created {} clusters with {}'.format(len(clustering), algorithm))
         return clustering
 
@@ -274,4 +274,4 @@ def _extract_dataset_id(map_id):
     return map_id.split('_')[1]  # reverse engineers the MapMakerManager.get_map_id
 
 
-clustering_factory = ClusteringFactory(weedmaster)
+clustering_factory = ClusteringFactory(strain_master)
