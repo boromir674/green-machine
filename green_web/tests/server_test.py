@@ -12,14 +12,14 @@ app_config = app.config
 # test_app = app.test_client()
 
 
-@pytest.fixture(scope='module')
-def client():
-    test_app = app.test_client()
-    _ = test_app.get('/api/data/dataset_load/' + app_config['DATASET_ID'])
-    return test_app
+# @pytest.fixture(scope='module')
+# def client():
+#     test_app = app.test_client()
+#     _ = test_app.get('/api/data/dataset_load/' + app_config['DATASET_ID'])
+#     return test_app
 
 @pytest.fixture(scope='module')
-def webapp(client):
+def webapp():
     return app
 
 map_specs1 = {
@@ -48,11 +48,11 @@ class TestFlask:
         # os.close(db_fd)
         # os.unlink(flaskr.app.config['DATABASE'])
 
-    def test_default_dataset(self, client, webapp):
+    def test_default_dataset(self, webapp):
         print("WN: '{}'".format(getattr(webapp.dt, 'name', '')))
         # print("CN: '{}'".format(getattr(client.dt, 'name', '')))
         assert webapp.dt.name == 'test-environment-dataset'
-        
+
     # @pytest.mark.parametrize("strain_id, name, flavors, strain_type", [
     #     ("tesla-tower", "tesla-tower", ["Pepper", "Sweet", "Berry"], 'sativa'),
     #     ("misty-morning", "misty-morning", ["Spicy/Herbal", "Pine"], 'hybrid'),
