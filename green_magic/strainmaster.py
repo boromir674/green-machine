@@ -25,12 +25,21 @@ class StrainMaster:
         return cls.__instance
 
     def __call__(self, *args, **kwargs):
-        self._datasets_dir = kwargs.get('_datasets_dir', self._datasets_dir)
-        self._maps_dir = kwargs.get('graphs_dir', self._maps_dir)
+        self._datasets_dir = kwargs.get('datasets_dir', self._datasets_dir)
+        self._maps_dir = kwargs.get('maps_dir', self._maps_dir)
         self.map_manager.maps_dir = self._maps_dir
         return self
 
-    def __init__(self, datasets_dir=None, graphs_dir=None):
+    @property
+    def datasets_dir(self):
+        return self._datasets_dir
+
+    @datasets_dir.setter
+    def datasets_dir(self, dataset_directory_path):
+        self._datasets_dir = dataset_directory_path
+        self.map_manager.maps_dir = dataset_directory_path
+
+    def __init__(self, datasets_dir=None, maps_dir=None):
         # self._datasets_dir = datasets_dir
         # if datasets_dir is None:
         #     self._datasets_dir = './'
@@ -51,7 +60,7 @@ class StrainMaster:
         """
         Returns the currently selected/active dataset as a reference to a StrainDataset object.\n
         :return: the reference to the dataset
-        :rtype: .strain_dataset.StrainDataset
+        :rtype: green_magic.strain_dataset.StrainDataset
         """
         return self.id2dataset[self.selected_dt_id]
 

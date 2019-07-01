@@ -35,6 +35,7 @@ def initialize_app(flask_app, environment):
     api.add_namespace(bmus_info_ns)
     from .api.business import SM
     SM.datasets_dir = flask_app.config['DATASETS_DIR']
+    # SM.datasets_dir = flask_app.config['DATASETS_DIR']
     # SM.load_dataset(flask_app.config['DATASET_ID'] + '-clean.pk')
     flask_app.register_blueprint(blueprint)
 

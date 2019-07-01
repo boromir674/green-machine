@@ -31,7 +31,7 @@ if not os.path.exists(graphs_dir):
     os.makedirs(graphs_dir)
 
 # global sm, som, clusters
-sm = StrainMaster(datasets_dir=datasets_dir, graphs_dir=graphs_dir)
+sm = StrainMaster(datasets_dir=datasets_dir, maps_dir=graphs_dir)
 clf = ClusteringFactory(sm)
 # r = DistroReporter()
 
@@ -63,7 +63,7 @@ class TestStrainMaster:
         # self.assertCountEqual(active_vars, self.wm.dt.active_variables)  # a and b have the same elements in the same number, regardless of their order
         # self.assertFalse(self.wm.dt.has_missing_values)  # bool(x) is False
         # self.assertEqual(len(self.wm.dt.full_df.columns), len(active_vars))
-
+        print(len(sm.dt))
         assert len(sm.dt) == 98
         assert len(sm.dt.datapoints[0]) == 72
         # self.assertEqual(len(self.wm.dt), 98)

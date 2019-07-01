@@ -1,16 +1,14 @@
-import os
-import sys
-import logging
 import inspect
+import logging
+import os
 import subprocess
-from collections import Counter
-import somoclu
+import sys
+
 import numpy as np
+import somoclu
 from sklearn.cluster import KMeans
 
 from . import definitions
-from .strain_dataset import StrainDataset
-from .labeling import get_labeler_instance
 
 _log = logging.getLogger(__name__)
 
