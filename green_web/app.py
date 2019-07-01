@@ -43,9 +43,6 @@ def initialize_app(flask_app, environment):
     SM.load_dataset('{}-clean.pk'.format(flask_app.config['DATASET_ID']))
     if not SM.dt.datapoints:
         SM.set_feature_vectors()
-    setattr(flask_app, 'dt', SM.dt)
-    # SM.datasets_dir = flask_app.config['DATASETS_DIR']
-    # SM.load_dataset(flask_app.config['DATASET_ID'] + '-clean.pk')
     flask_app.register_blueprint(blueprint)
 
 
@@ -64,7 +61,6 @@ def initialize_app(flask_app, environment):
 
 def get_logger_n_app(environment='development'):
     app = Flask(__name__)
-    # app.test_client()
     initialize_app(app, environment)
     CORS(app)
 
