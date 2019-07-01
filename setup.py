@@ -23,18 +23,17 @@ setup(
     # url='',
     # author='Konstantinos',
     # author_email='',
-    download_url='https://github.com/boromir674/music-album-creator/archive/v0.5.3.tar.gz',
+    # download_url='https://github.com/boromir674/music-album-creator/archive/v0.5.3.tar.gz',
     license='GNU GPLv3',
     packages=find_packages(exclude=["*.testing", "*.tests.*", "tests.*", "tests"]),
-    install_requires=[],
+    install_requires=["flask", "flask_restplus", "flask_cors", "numpy", "nltk", 'sklearn', 'somoclu', 'pandas'],
     include_package_data=True,
-    entry_points = {
-        'console_scripts': ['green-web-server=music_album_creation.create_album:main'],
-    },
-    # TODO use the above 2 lines of code
-    # setup_requires=['pytest-runner>=2.0',],
-    # tests_require=['pytest',],
+    # entry_points = {
+    #     'console_scripts': ['green-web-server=music_album_creation.create_album:main'],
+    # },
+    setup_requires=['pytest-runner>=2.0',],
     tests_require=['pytest',],
+    # tests_require=['pytest',],
     # test_suite='',
-    zip_safe=False
+    zip_safe=False,
 )

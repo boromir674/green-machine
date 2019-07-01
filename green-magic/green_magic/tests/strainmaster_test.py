@@ -7,7 +7,7 @@ from green_magic.strain_dataset import StrainDataset
 from green_magic.clustering import ClusteringFactory, DistroReporter, get_model_quality_reporter
 
 # Random order for tests runs. (Original is: -1 if x<y, 0 if x==y, 1 if x>y).
-unittest.TestLoader.sortTestMethodsUsing = lambda _, x, y: randint(-1, 1)
+# unittest.TestLoader.sortTestMethodsUsing = lambda _, x, y: randint(-1, 1)
 
 
 # @pytest.fixture(scope='module')
@@ -22,7 +22,7 @@ test_file = 'strain-test-set-100.jl'
 dt_path = my_dir + '/' + test_file
 all_vars = ['type', 'effects', 'medical', 'negatives', 'flavors']
 active_vars = ['type', 'effects', 'medical', 'negatives', 'flavors']
-wd = 'test'
+dataset_id = 'test'
 
 
 if not os.path.exists(datasets_dir):
@@ -35,7 +35,7 @@ sm = StrainMaster(datasets_dir=datasets_dir, graphs_dir=graphs_dir)
 clf = ClusteringFactory(sm)
 # r = DistroReporter()
 
-dt = sm.create_strain_dataset(dt_path, wd)
+dt = sm.create_strain_dataset(dt_path, dataset_id)
 dt.use_variables(active_vars)
 sm.dt.clean()
 
@@ -43,7 +43,7 @@ vs = sm.get_feature_vectors(sm.dt)
 som = sm.map_manager.get_som('toroid.rectangular.10.10.random')
 
 clusters = clf.create_clusters(som, 'kmeans', nb_clusters=3, vars=all_vars, ngrams=1)
-qr = get_model_quality_reporter(sm, wd)
+qr = get_model_quality_reporter(sm, dataset_id)
 qr.measure(clusters, metric='silhouette')
 qr.measure(clusters, metric='cali-hara')
 
@@ -57,26 +57,26 @@ class TestStrainMaster:
 
     def test_dataset_creation(self):
         assert isinstance(dt, StrainDataset)
-        assert active_vars == dt.active_variables
+        assert sorted(list(active_vars)) == sorted(list(dt.active_variables))
         assert not dt.has_missing_values
         assert len(dt.full_df.columns) == len(active_vars)
         # self.assertCountEqual(active_vars, self.wm.dt.active_variables)  # a and b have the same elements in the same number, regardless of their order
         # self.assertFalse(self.wm.dt.has_missing_values)  # bool(x) is False
         # self.assertEqual(len(self.wm.dt.full_df.columns), len(active_vars))
 
-        assert len(wm.dt) == 98
-        assert len(wm.dt.datapoints[0]) == 72
+        assert len(sm.dt) == 98
+        assert len(sm.dt.datapoints[0]) == 72
         # self.assertEqual(len(self.wm.dt), 98)
         # self.assertEqual(len(self.wm.dt.datapoints[0]), 72)
 
     def test_save_load(self):
-        wm.save_dataset(wd)
-        wm.load_dataset(wd + '-clean.pk')
+        sm.save_dataset(dataset_id)
+        sm.load_dataset(dataset_id + '-clean.pk')
 
     def test_som_creation(self):
-        assert som.bmus.shape[0] == len(self.wm.dt)
+        assert som.bmus.shape[0] == len(sm.dt)
 
-        assert som.codebook.shape == (10, 10, len(self.wm.dt.datapoints[0]))
+        assert som.codebook.shape == (10, 10, len(sm.dt.datapoints[0]))
 
         assert som.umatrix.shape == (10, 10)
 
@@ -84,4 +84,4 @@ class TestStrainMaster:
 
     def test_cluster_functions(self):
         assert len(clusters) == 3
-        assert sum([len(_) for _ in self.cls]) == len(wm.dt)
+        assert sum([len(_) for _ in clusters]) == len(sm.dt)

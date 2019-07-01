@@ -7,7 +7,6 @@ from somoclu import Somoclu
 
 from green_magic.features import enctype2features
 from green_magic.utils import extract_value, gen_values, generate_id_tokens
-from green_magic import strain_master
 
 
 class Clustering(object):
@@ -273,5 +272,3 @@ class ClusteringFactory(object):
 def _extract_dataset_id(map_id):
     return map_id.split('_')[1]  # reverse engineers the MapMakerManager.get_map_id
 
-
-clustering_factory = ClusteringFactory(strain_master)
