@@ -13,16 +13,33 @@ _log = logging.getLogger(__name__)
 
 
 class StrainMaster:
+    __instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not cls.__instance:
+            cls.__instance = super().__new__(cls)
+            cls.__instance._datasets_dir = kwargs.get('datasets_dir', './')
+            cls.__instance._maps_dir = kwargs.get('maps_dir', './')
+        cls.__instance._datasets_dir = kwargs.get('datasets_dir', cls.__instance._datasets_dir)
+        cls.__instance._maps_dir = kwargs.get('maps_dir', cls.__instance._maps_dir)
+        return cls.__instance
+
+    def __call__(self, *args, **kwargs):
+        self._datasets_dir = kwargs.get('_datasets_dir', self._datasets_dir)
+        self._maps_dir = kwargs.get('graphs_dir', self._maps_dir)
+        self.map_manager.maps_dir = self._maps_dir
+        return self
 
     def __init__(self, datasets_dir=None, graphs_dir=None):
-        self.datasets_dir = datasets_dir
-        if datasets_dir is None:
-            self.datasets_dir = './'
-        if graphs_dir is None:
-            graphs_dir = './'
+        # self._datasets_dir = datasets_dir
+        # if datasets_dir is None:
+        #     self._datasets_dir = './'
+        # if graphs_dir is None:
+        #     graphs_dir = './'
+        # self._maps_dir = graphs_dir
         self.id2dataset = {}
         self.selected_dt_id = None
-        self.map_manager = MapMakerManager(self, graphs_dir)
+        self.map_manager = MapMakerManager(self, self._maps_dir)
         self.lexicon = WeedLexicon()
 
     def strain_names(self, coordinates):
@@ -84,7 +101,7 @@ class StrainMaster:
         return data_set
 
     def load_dataset(self, a_file):
-        strain_dataset = create_dataset_from_pickle(self.datasets_dir + '/' + a_file)
+        strain_dataset = create_dataset_from_pickle(self._datasets_dir + '/' + a_file)
         self.id2dataset[strain_dataset.name] = strain_dataset
         self.selected_dt_id = strain_dataset.name
         _log.info("Loaded dataset with id '{}'".format(strain_dataset.name))
@@ -96,7 +113,7 @@ class StrainMaster:
             name = '-not-clean'
         else:
             name = '-clean'
-        name = self.datasets_dir + '/' + dataset.name + name + '.pk'
+        name = self._datasets_dir + '/' + dataset.name + name + '.pk'
         try:
             with open(name, 'wb') as pickled_dataset:
                 pickle.dump(dataset, pickled_dataset, protocol=pickle.HIGHEST_PROTOCOL)

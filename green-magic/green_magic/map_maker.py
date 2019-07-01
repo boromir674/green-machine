@@ -32,6 +32,12 @@ class MapMakerManager:
         self._dataset_id = ''
         for figure in os.listdir(self.graphs_dir):
             self.figures[figure.split('.')[0]] = definitions.graphs_dir + figure
+    @property
+    def maps_dir(self):
+        return self.graphs_dir
+    @maps_dir.setter
+    def maps_dir(self, maps_directory_path):
+        self.graphs_dir = maps_directory_path
 
     def __getitem__(self, map_expr):
         return self.get_map_maker(self.backend, self._strain_master.selected_dt_id, int(map_expr.split('x')[0]), int(map_expr.split('x')[1]))

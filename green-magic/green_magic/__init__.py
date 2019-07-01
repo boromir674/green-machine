@@ -5,7 +5,7 @@ from .clustering import ClusteringFactory, get_type_separation_eval
 
 import logging
 
-strain_master = StrainMaster()
+# strain_master = StrainMaster()
 # clustering_factory = ClusteringFactory(strain_master)
 extr_eval = get_type_separation_eval()
 
