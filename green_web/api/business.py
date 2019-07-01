@@ -95,3 +95,6 @@ def load_dataset(dataset_id):
         'active_vars': SM.dt.active_variables,
         'vec_len': len(SM.dt.datapoints[0])
     }
+
+def list_datasets():
+    return {'datasets': sorted([dataset_id for dataset_id in SM._id2dataset.keys()])}

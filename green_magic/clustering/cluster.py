@@ -249,14 +249,14 @@ class ClusteringFactory(object):
         map_id = self._sm.map_manager.map_obj2id[som]
         dt_id = _extract_dataset_id(map_id)
         if vars is None:
-            vars = tuple((var for var in self._sm.id2dataset[dt_id].generate_variables()))
+            vars = tuple((var for var in self._sm._id2dataset[dt_id].generate_variables()))
         if isinstance(som, Somoclu):
             som.cluster(algorithm=self.algorithms[algorithm](nb_clusters, random_state))
             for i, arr in enumerate(som.bmus):  # iterate through the array of shape [nb_datapoints, 2]. Each row is the coordinates of the neuron the datapoint gets attributed to (closest distance)
                 attributed_cluster = som.clusters[arr[0], arr[1]]  # >= 0
                 if attributed_cluster not in id2members:
                     id2members[attributed_cluster] = set()
-                id2members[attributed_cluster].add(self._sm.id2dataset[dt_id].datapoint_index2_id[i])
+                id2members[attributed_cluster].add(self._sm._id2dataset[dt_id].datapoint_index2_id[i])
         else:
             raise Exception("Clustering is not supported for Self Organizing Map of type '{}'".format(type(som)))
         b = ''
@@ -264,7 +264,7 @@ class ClusteringFactory(object):
         for j in range(som.umatrix.shape[0]):
             b += ' '.join(' '*(max_len-len(str(i))) + str(i) for i in som.clusters[j, :]) + '\n'
         clustering = Clustering(id2members, vars, map_id, b, dt_id, self)
-        clustering.compute_stats(self._sm.id2dataset[dt_id].full_df.loc, ngrams=ngrams)
+        clustering.compute_stats(self._sm._id2dataset[dt_id].full_df.loc, ngrams=ngrams)
         print('Created {} clusters with {}'.format(len(clustering), algorithm))
         return clustering
 

@@ -3,7 +3,7 @@ import logging
 from flask import request
 from flask_restplus import Resource
 from green_web.api.restplus import api
-from green_web.api.business import create_dataset, load_dataset
+from green_web.api.business import create_dataset, load_dataset, list_datasets
 from green_web.api.serializers import dataset_specs, dataset_info
 
 # from green_web.api.serializers import base_strain
@@ -34,6 +34,13 @@ class DatasetLoader(Resource):
         """Load a Strain dataset given id"""
         return load_dataset(dataset_id)
 
+@ns.route('/list-datasets')
+class DatasetEnlister(Resource):
+    """Lists computed strain datasets"""
+
+    def get(self):
+        """Lists StrainDataset instances"""
+        return list_datasets()
 
 # @ns.route('/strain/<string:strain_id>')
 # @api.doc(responses={404: 'Strain not found'}, params={'strain_id': 'The Strain ID'})

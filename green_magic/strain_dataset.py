@@ -52,6 +52,8 @@ class StrainDataset:
         self.feature_computer = None
 
     def __getitem__(self, _id):
+        if _id not in self.full_df.index:
+            raise MissingStrainRequestError("Requested: '{}'; not in [{}]".format(_id, ', '.join(sorted(list(self.full_df.index)))))
         return self.full_df.loc[_id]
 
     def __len__(self):
@@ -143,7 +145,14 @@ def get_generator(iterable):
 
 
 def create_dataset_from_pickle(a_file):
-    with open(a_file, 'rb') as pickle_file:
-        strain_dataset = pickle.load(pickle_file)
-        assert isinstance(strain_dataset, StrainDataset)
+    try:
+        with open(a_file, 'rb') as pickle_file:
+            strain_dataset = pickle.load(pickle_file)
+            assert isinstance(strain_dataset, StrainDataset)
+    except FileNotFoundError as e:
+        raise LoadingInvalidDatasetError(str(e))
     return strain_dataset
+
+
+class LoadingInvalidDatasetError(Exception): pass
+class MissingStrainRequestError(Exception): pass

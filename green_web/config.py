@@ -37,7 +37,7 @@ class BaseConfig(object):
     PERMANENT_SESSION_LIFETIME = 2500000  # TODO: Temporal cheat around the json serialization
 
     def __init__(self):  # these cannot be used as i.e. app.config['DATA_PATH']
-        self.DATA_PATH = os.path.join(basedir, 'data')
+        # self.DATA_PATH = os.path.join(basedir, 'data')
         self.OUTPUT_FOLDER = os.path.join(basedir, 'output')
         self.LOCAL_LOG = os.path.join(self.OUTPUT_FOLDER, 'log')
         self.PACKAGE_FOLDERS = []
@@ -50,7 +50,7 @@ class DevelopmentConfig(BaseConfig):
     SECRET_CONFIG = 'dev-config.py'
     SERVER_NAME = "localhost:5550"
     DEBUG = True
-    DATASET_ID = 'new-dt'
+    DATASET_ID = 'default-dataset'
     DATASETS_DIR = os.path.join(basedir, '../data')
     # URL_PREFIX = '/api/v1.0.0'
     # HOST='0.0.0.0'
@@ -65,8 +65,8 @@ class TestingConfig(BaseConfig):
     SERVER_NAME = "localhost:5556"
     TESTING = True
     # DEBUG = True
-    DATASET_ID = 'unittest-dt'
-    DATASETS_DIR = os.path.join(basedir, 'tests')
+    DATASET_ID = 'test-environment-dataset'
+    DATASETS_DIR = os.path.join(basedir, '../data')
 
 
 class ProductionConfig(BaseConfig):

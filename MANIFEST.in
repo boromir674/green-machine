@@ -1,6 +1,9 @@
 include README.rst
 include LICENSE.txt
+include data/default-dataset-clean.pk
+include data/test-environment-dataset-clean.pk
 include green_magic/tests/strain-test-set-100.jl
-include data/alpha-clean.pk
+
+
 include green_web/tests/100-strains.jl
 include green_web/tests/unittest-dt-clean.pk
