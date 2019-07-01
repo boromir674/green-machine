@@ -113,6 +113,8 @@ class StrainMaster:
         data_set.load_feature_indexes()
         self._id2dataset[dataset_id] = data_set
         self.selected_dt_id = dataset_id
+        _log.info("Created StrainDataset object with id '{}'".format(data_set.name))
+        assert data_set.name == dataset_id
         return data_set
 
     def load_dataset(self, a_file):

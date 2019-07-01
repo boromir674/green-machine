@@ -53,7 +53,7 @@ class StrainDataset:
 
     def __getitem__(self, _id):
         if _id not in self.full_df.index:
-            raise MissingStrainRequestError("Requested: '{}'; not in [{}]".format(_id, ', '.join(sorted(list(self.full_df.index)))))
+            raise MissingStrainRequestError("Requested: '{}'; not in dataset with id '{}' that indexes the following strains: [{}]".format(_id, self.name, ', '.join(sorted(list(self.full_df.index)))))
         return self.full_df.loc[_id]
 
     def __len__(self):

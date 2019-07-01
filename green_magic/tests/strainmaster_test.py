@@ -51,16 +51,12 @@ class TestStrainMaster:
         # dt = sm.create_strain_dataset(raw_datafile_path, dataset_id)
         # dt.use_variables(active_vars)
         # sm.dt.clean()
-        print("3 {}".format(strain_master.selected_dt_id))
-        print("3 {}".format(strain_master._id2dataset))
         assert not strain_master.dt.has_missing_values
         assert len(strain_master.dt) == 98
         assert len(strain_master.dt.full_df) == 98
         strain_master.set_feature_vectors()
         assert len(strain_master.dt.datapoints) == 98
         assert len(strain_master.dt.datapoints[0]) == 72
-        print("4 {}".format(strain_master.selected_dt_id))
-        print("4 {}".format(strain_master._id2dataset))
         strain_master.save_dataset(dataset_id)
         assert os.path.isfile(os.path.join(strain_master.datasets_dir, '{}-clean.pk'.format(dataset_id)))
 

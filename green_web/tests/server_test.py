@@ -1,3 +1,4 @@
+import sys
 import os
 import json
 import pytest
@@ -5,8 +6,9 @@ import pytest
 
 from green_web import get_logger_n_app
 
-log, app = get_logger_n_app(environment='testing')
-app_config = app.config
+# log, app = get_logger_n_app(environment='testing')
+my_dir = os.path.dirname(os.path.realpath(__file__))
+
 
 # self.db_fd, green_app.config['DATABASE'] = tempfile.mkstemp()
 # test_app = app.test_client()
@@ -20,6 +22,8 @@ app_config = app.config
 
 @pytest.fixture(scope='module')
 def webapp():
+    log, app = get_logger_n_app(environment='testing')
+    # app_config = app.config['DATASETS_DIR'] = os.path.join(my_dir, '../../data')
     return app
 
 map_specs1 = {
@@ -53,24 +57,32 @@ class TestFlask:
         # print("CN: '{}'".format(getattr(client.dt, 'name', '')))
         assert webapp.dt.name == 'test-environment-dataset'
 
-    # @pytest.mark.parametrize("strain_id, name, flavors, strain_type", [
-    #     ("tesla-tower", "tesla-tower", ["Pepper", "Sweet", "Berry"], 'sativa'),
-    #     ("misty-morning", "misty-morning", ["Spicy/Herbal", "Pine"], 'hybrid'),
-    #     ("alpine-blue", "alpine-blue", ["Berry", "Blueberry", "Pine"], 'hybrid'),
-    #     pytest.param("purple-bud",
-    #                  "purple-bud", ["Pine", "Pepper", "Lavender"], 'sativa',
-    #                  marks=pytest.mark.xfail),
-    # ])
-    # def test_strain_id_endpoint(self, strain_id, name, flavors, strain_type, web_app):
-    #     response = web_app.get('/api/strain/' + strain_id)
-    #     data = json.loads(response.get_data(as_text=True))
-    #     assert 'flavors' in data
-    #     assert 'name' in data
-    #     assert 'type' in data
-    #     assert data['flavors'] == flavors
-    #     assert data['name'] == name
-    #     assert data['type'] == strain_type
-    #
+    @pytest.mark.parametrize("strain_id, name, flavors, strain_type", [
+        ("tesla-tower", "tesla-tower", ["Pepper", "Sweet", "Berry"], 'sativa'),
+        # ("misty-morning", "misty-morning", ["Spicy/Herbal", "Pine"], 'hybrid'),
+        # ("alpine-blue", "alpine-blue", ["Berry", "Blueberry", "Pine"], 'hybrid'),
+        pytest.param("purple-bud",
+                     "purple-bud", ["Pine", "Pepper", "Lavender"], 'sativa',
+                     marks=pytest.mark.xfail),
+    ])
+    def test_strain_id_endpoint(self, strain_id, name, flavors, strain_type, webapp):
+        assert webapp.dt.name == 'test-environment-dataset'
+        print("WN: '{}'".format(getattr(webapp.dt, 'name', '')))
+        # webapp.config['DATASETS_DIR'] = ''
+        client = webapp.test_client()
+        _ = client.get('/api/data/dataset_load/' + 'test-environment-dataset')
+        response = client.get('/api/data/selected-dataset')
+        data = json.loads(response.get_data(as_text=True))
+        assert data['id'] == 'test-environment-dataset'
+        response = client.get('/api/strain/' + strain_id)
+        data = json.loads(response.get_data(as_text=True))
+        assert 'flavors' in data
+        assert 'name' in data
+        assert 'type' in data
+        assert data['flavors'] == flavors
+        assert data['name'] == name
+        assert data['type'] == strain_type
+
     # @pytest.mark.parametrize("map_specs, map_id", [
     #     (map_specs1, 'somoclu_' + app_config['DATASET_ID'] + '_pca_toroid_hexagonal_7_5'),
     #     (map_specs2, 'somoclu_' + app_config['DATASET_ID'] + '_random_planar_rectangular_8_4')
