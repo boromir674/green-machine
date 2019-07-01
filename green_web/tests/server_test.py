@@ -26,6 +26,13 @@ def webapp():
     # app_config = app.config['DATASETS_DIR'] = os.path.join(my_dir, '../../data')
     return app
 
+# @pytest.fixture(scope='module')
+# def app_config(webapp):
+#     # log, app = get_logger_n_app(environment='testing')
+#     # app_config = app.config['DATASETS_DIR'] = os.path.join(my_dir, '../../data')
+#     return webapp.config
+
+
 map_specs1 = {
     'columns': 5,
     'grid': 'hexagonal',
@@ -83,19 +90,26 @@ class TestFlask:
         assert data['name'] == name
         assert data['type'] == strain_type
 
+
+
     # @pytest.mark.parametrize("map_specs, map_id", [
     #     (map_specs1, 'somoclu_' + app_config['DATASET_ID'] + '_pca_toroid_hexagonal_7_5'),
     #     (map_specs2, 'somoclu_' + app_config['DATASET_ID'] + '_random_planar_rectangular_8_4')
     # ])
-    # def test_map_creation_endpoint(self, map_specs, map_id, web_app):
-    #     # with web_app as c:
-    #     response = web_app.post('/api/strain/map', data=json.dumps(map_specs), headers={"Content-Type": "application/json"})
-
+    @pytest.mark.parametrize("map_specs, map_id", [
+        (map_specs1, 'somoclu_' + 'test-environment-dataset' + '_pca_toroid_hexagonal_7_5'),
+        (map_specs2, 'somoclu_' + 'test-environment-dataset' + '_random_planar_rectangular_8_4')
+    ])
+    def test_map_creation_endpoint(self, map_specs, map_id, webapp):
+        client = webapp.test_client()
+        response = client.post('/api/strain/map', data=json.dumps(map_specs), headers={"Content-Type": "application/json"})
+        data = json.loads(response.get_data(as_text=True))
+        assert 'map_id' in data
+        assert data['map_id'] == map_id
 
         # map_id1 = 'somoclu_' + app.config['DATASET_ID'] + '_pca_toroid_hexagonal_7_5'
         # data = json.loads(response.get_data(as_text=True))
-        # assert 'map_id' in data
-        # assert data['map_id'] == map_id
+
         # rv = c.post('/jsonapi', json={
         #     'attr': 'value', 'other': 'data'
         # })
