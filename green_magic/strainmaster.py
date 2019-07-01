@@ -41,7 +41,7 @@ class StrainMaster:
     @datasets_dir.setter
     def datasets_dir(self, dataset_directory_path):
         self._datasets_dir = dataset_directory_path
-        self.map_manager.maps_dir = dataset_directory_path
+        # self.map_manager.maps_dir = dataset_directory_path
 
     def __init__(self, datasets_dir=None, maps_dir=None):
         # self._datasets_dir = datasets_dir

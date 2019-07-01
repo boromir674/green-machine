@@ -25,7 +25,7 @@ class DatasetResource(Resource):
         return create_dataset(request.json)
 
 
-@ns.route('/dataset_load<string:dataset_id>')
+@ns.route('/dataset_load/<string:dataset_id>')
 @api.doc(responses={404: 'Dataset not found'}, params={'dataset_id': 'The Strain dataset ID'})
 class DatasetLoader(Resource):
 
