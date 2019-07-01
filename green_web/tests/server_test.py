@@ -59,8 +59,8 @@ class TestFlask:
 
     @pytest.mark.parametrize("strain_id, name, flavors, strain_type", [
         ("tesla-tower", "tesla-tower", ["Pepper", "Sweet", "Berry"], 'sativa'),
-        # ("misty-morning", "misty-morning", ["Spicy/Herbal", "Pine"], 'hybrid'),
-        # ("alpine-blue", "alpine-blue", ["Berry", "Blueberry", "Pine"], 'hybrid'),
+        ("misty-morning", "misty-morning", ["Spicy/Herbal", "Pine"], 'hybrid'),
+        ("alpine-blue", "alpine-blue", ["Berry", "Blueberry", "Pine"], 'hybrid'),
         pytest.param("purple-bud",
                      "purple-bud", ["Pine", "Pepper", "Lavender"], 'sativa',
                      marks=pytest.mark.xfail),
@@ -70,10 +70,10 @@ class TestFlask:
         print("WN: '{}'".format(getattr(webapp.dt, 'name', '')))
         # webapp.config['DATASETS_DIR'] = ''
         client = webapp.test_client()
-        _ = client.get('/api/data/dataset_load/' + 'test-environment-dataset')
-        response = client.get('/api/data/selected-dataset')
-        data = json.loads(response.get_data(as_text=True))
-        assert data['id'] == 'test-environment-dataset'
+        # _ = client.get('/api/data/dataset_load/' + 'test-environment-dataset')
+        # response = client.get('/api/data/selected-dataset')
+        # data = json.loads(response.get_data(as_text=True))
+        # assert data['id'] == 'test-environment-dataset'
         response = client.get('/api/strain/' + strain_id)
         data = json.loads(response.get_data(as_text=True))
         assert 'flavors' in data
