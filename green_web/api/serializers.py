@@ -69,3 +69,8 @@ strains_list = api.model('Strains list from som bmu node', {
 })
 
 # fields.List(fields.String, readOnly=True, description='The set of variables'),
+
+current_dataset = api.model("The currently selected StrainDataset", {
+    'id': fields.String(readOnly=True, description='The unique identifier of a strain dataset'),
+    'dataset-info': fields.Nested(dataset_info)
+})

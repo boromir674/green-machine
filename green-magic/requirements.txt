@@ -1,5 +1,0 @@
-numpy
-nltk
-sklearn
-somoclu
-pandas

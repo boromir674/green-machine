@@ -1,16 +1,14 @@
-import os
-import sys
-import logging
 import inspect
+import logging
+import os
 import subprocess
-from collections import Counter
-import somoclu
+import sys
+
 import numpy as np
+import somoclu
 from sklearn.cluster import KMeans
 
 from . import definitions
-from .strain_dataset import StrainDataset
-from .labeling import get_labeler_instance
 
 _log = logging.getLogger(__name__)
 
@@ -50,7 +48,7 @@ class MapMakerManager:
 
         _id = self._get_map_maker_id(self.backend)
         if _id not in self.map_makers:
-            self.map_makers[_id] = self._create_map_maker(map_type, self._strain_master.id2dataset[dataset_id], nb_rows=nb_rows, nb_cols=nb_cols)
+            self.map_makers[_id] = self._create_map_maker(map_type, self._strain_master._id2dataset[dataset_id], nb_rows=nb_rows, nb_cols=nb_cols)
             self.map_makers[_id].register(self)
         return self
 

@@ -2,7 +2,7 @@ import os
 import green_magic
 
 from green_magic import StrainMaster
-from green_web.config import TestingConfig
+from green_web.config import DevelopmentConfig
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -87,11 +87,23 @@ def create_dataset(dataset_specs):
         'vec_len': len(dataset.datapoints[0])
     }
 
-
 def load_dataset(dataset_id):
     SM.load_dataset(dataset_id + '-clean.pk')
     return {
         'size': len(SM.dt),
         'active_vars': SM.dt.active_variables,
         'vec_len': len(SM.dt.datapoints[0])
+    }
+
+def list_datasets():
+    return {'datasets': sorted([dataset_id for dataset_id in SM._id2dataset.keys()])}
+
+def show_selected_dataset():
+    return {
+        'id': SM.selected_dt_id,
+        'dataset-info': {
+            'size': len(SM.dt),
+            'active_vars': SM.dt.active_variables,
+            'vec_len': len(SM.dt.datapoints[0])
+        }
     }

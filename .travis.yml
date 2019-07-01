@@ -4,8 +4,6 @@ python:
   - "3.5"
 
 before_install:
-  - chmod +x green-magic/green_magic/tests/strainmaster_test.py
-  - chmod +x green-web/green_web/tests/server_test.py
   - chmod +x install-nltk-resources.py
 
 install:
@@ -13,5 +11,4 @@ install:
 
 script:
   - python install-nltk-resources.py
-  - python green_web/tests/server_test.py
-  - python green_magic/tests/strainmaster_test.py
+  - python -m pytest
