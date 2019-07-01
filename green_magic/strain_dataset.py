@@ -91,6 +91,7 @@ class StrainDataset:
             self.datapoints.append(datapoint)
             self.datapoint_index2_id[len(self.datapoints) - 1] = strain.name
             self.id2datapoint[strain.name] = datapoint
+        _log.info("Computed '{}' strain datapoints.".format(len(self.datapoints)))
         return self.datapoints
 
     def load_feature_indexes(self):
