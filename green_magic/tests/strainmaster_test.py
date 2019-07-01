@@ -12,7 +12,7 @@ my_dir = os.path.dirname(os.path.realpath(__file__))
 datasets_dir = os.path.join(my_dir, 'dts')
 graphs_dir = os.path.join(my_dir, 'graphs')
 
-sample_source_strains = 'strain-test-set-100.jl'
+sample_source_strains = 'sample-strains.jl'
 
 raw_datafile_path = os.path.join(my_dir, sample_source_strains)
 
