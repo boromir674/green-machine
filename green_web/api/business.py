@@ -35,9 +35,11 @@ def get_strain_info(strain_id):
 
 
 def get_strain_coordinates(strain_id):
-
-    x = SM.som.bmus[SM.dt.id2index[strain_id]][0]
-    y = SM.som.bmus[SM.dt.id2index[strain_id]][1]
+    try:
+        x = SM.som.bmus[SM.dt.id2index[strain_id]][0]
+        y = SM.som.bmus[SM.dt.id2index[strain_id]][1]
+    except KeyError as e:
+        raise KeyError("Requested strain '{}', but index has [{}].".format(strain_id, sorted(list(SM.dt.id2index.keys()))))
     # print(SM.map_manager.map_obj2id)
     # print(SM.som)
     # print(SM.som in SM.map_manager.map_obj2id)
