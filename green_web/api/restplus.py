@@ -1,5 +1,4 @@
 import logging
-# import traceback
 import werkzeug
 werkzeug.cached_property = werkzeug.utils.cached_property
 from flask_restplus import Api

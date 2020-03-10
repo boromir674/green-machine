@@ -2,7 +2,7 @@ from .definitions import enctype2features
 from .utils import generate_words, gen_values
 
 
-class WeedLexicon(object):
+class StrainLexicon(object):
 
     def __init__(self):
         self.id2word = {}
@@ -46,6 +46,7 @@ class FeatureComputer:
                                    }
 
     def encode(self, encoder_type, strain, feat_type):
+        """Call this method to """
         extractor = self.variable2extractor[feat_type]
         if encoder_type == 'binary-1':
             v = [0.0] * (self._dt.get_nb_values(feat_type) - 1)
@@ -63,6 +64,9 @@ class FeatureComputer:
         return v
 
     def get_basic_feature_representation(self, strain):
+        """Call this method to get encoded feature vectors for each datapoint.\n
+        :param str strain:
+        """
         rep = []
         for feat_def in self.feat_defs:
             enc_type, feat_type = feat_def.split('#')

@@ -3,7 +3,7 @@ import sys
 import json
 import pickle
 import numpy as np
-from .features import WeedLexicon
+from .features import StrainLexicon
 from .map_maker import MapMakerManager
 from .strain_dataset import StrainDataset, create_dataset_from_pickle
 from .clustering import get_model_quality_reporter
@@ -23,16 +23,21 @@ class StrainMaster:
             cls.__instance.selected_dt_id = None
             cls.__instance._id2dataset = {}
             cls.__instance.map_manager = MapMakerManager(cls.__instance, cls.__instance._maps_dir)
-            cls.__instance.lexicon = WeedLexicon()
+            cls.__instance.lexicon = StrainLexicon()
         cls.__instance._datasets_dir = kwargs.get('datasets_dir', cls.__instance._datasets_dir)
         cls.__instance._maps_dir = kwargs.get('maps_dir', cls.__instance._maps_dir)
         return cls.__instance
 
     def __call__(self, *args, **kwargs):
+        """
+        Call to update any of 'datasets_dir' and/or 'maps_dir'
+        """
         self._datasets_dir = kwargs.get('datasets_dir', self._datasets_dir)
         self._maps_dir = kwargs.get('maps_dir', self._maps_dir)
         self.map_manager.maps_dir = self._maps_dir
         return self
+
+    def __init__(self, datasets_dir=None, maps_dir=None): pass
 
     @property
     def datasets_dir(self):
@@ -43,14 +48,6 @@ class StrainMaster:
         self._datasets_dir = dataset_directory_path
         # self.map_manager.maps_dir = dataset_directory_path
 
-    def __init__(self, datasets_dir=None, maps_dir=None):
-        # self._datasets_dir = datasets_dir
-        # if datasets_dir is None:
-        #     self._datasets_dir = './'
-        # if graphs_dir is None:
-        #     graphs_dir = './'
-        # self._maps_dir = graphs_dir
-        pass
 
     def strain_names(self, coordinates):
         g = ((self.dt.datapoint_index2_id[_], self.som.bmus[_]) for _ in range(len(self.dt)))
@@ -84,7 +81,7 @@ class StrainMaster:
         _ = self.get_feature_vectors(self.dt, list_of_variables=list_of_variables)
 
     def get_feature_vectors(self, strain_dataset, list_of_variables=None):
-        """
+        """Call this function to get the encoded feature as a list of vectors
         This method must be called
         :param strain_dataset:
         :param list_of_variables:

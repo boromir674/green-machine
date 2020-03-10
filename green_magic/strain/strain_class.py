@@ -30,6 +30,7 @@ class Strain:
             json_ready_dict.get('effects', {}),
             json_ready_dict.get('medical', {}),
             json_ready_dict.get('negatives', {}),
+            json_ready_dict.get('parents', []),
             *[cls._b([x, json_ready_dict.get(x, 'NaN')]) for x in ('stretch', 'flowering', 'yield', 'height', 'difficulty')],
             json_ready_dict.get('images', {}),
             json_ready_dict.get('description', {}))
@@ -38,6 +39,7 @@ class Strain:
     def _b(cls, x):
         return {'NaN': lambda z: None}.get(x[1], lambda y: GrowInfo.create(*y))(x)
 
+
 @attr.s(cmp=False)
 class Range:
     lower = attr.ib(init=True)
@@ -45,7 +47,7 @@ class Range:
     @upper.validator
     def _range_sanity(self, attribute, value):
         if value <= self.lower:
-            raise ValueError("Lower: {}, upper: {}. Cannot represent valid range")
+            raise ValueError("Lower: {}, upper: {}. Cannot represent a valid range")
 
     def __eq__(self, other):
         return self.lower == other.lower and self.upper == other.upper
