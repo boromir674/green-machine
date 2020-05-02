@@ -1,4 +1,3 @@
-from .definitions import enctype2features
 from .utils import generate_words, gen_values
 
 
@@ -78,6 +77,26 @@ class FeatureComputer:
         return rep
 
 
+# define encoding for variables
+# encoding type -> variable features
+enctype2features = {
+    'binary-1': [],
+    'binary-on-off': [
+        'type',
+        'flavors',
+        'difficulty',
+        'yield',
+        'flowering',
+        'height',
+        'stretch',
+        # 'name'
+    ],
+    'set-real-value': [
+        'effects',
+        'medical',
+        'negatives'
+    ],
+}
 def get_encoding_type(feat_name):
     for enc_type, list_of_feats in enctype2features.items():
         if feat_name in list_of_feats:

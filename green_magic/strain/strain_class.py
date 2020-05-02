@@ -7,18 +7,22 @@ class Strain:
     id = attr.ib(init=True)
     name = attr.ib(init=True)
     type = attr.ib(init=True)
-    flavors = attr.ib(init=True, default=[])
-    effects = attr.ib(init=True, default={})
-    medical = attr.ib(init=True, default={})
-    negatives = attr.ib(init=True, default={})
-    parents = attr.ib(init=True, default=[])
+    flavors = attr.ib(init=True, default=None)
+    effects = attr.ib(init=True, default=None)
+    medical = attr.ib(init=True, default=None)
+    negatives = attr.ib(init=True, default=None)
+    parents = attr.ib(init=True, default=None)
     stretch = attr.ib(init=True, default=None)
     flowering = attr.ib(init=True, default=None)
     yield_ = attr.ib(init=True, default=None)
     height = attr.ib(init=True, default=None)
     difficulty = attr.ib(init=True, default=None)
-    images = attr.ib(init=True, default=[])
-    description = attr.ib(init=True, default='')
+    images = attr.ib(init=True, default=None)
+    description = attr.ib(init=True, default=None)
+
+    @classmethod
+    def new(cls, *args, **kwargs):
+        return Strain()
 
     @classmethod
     def from_dict(cls, json_ready_dict):
@@ -90,7 +94,6 @@ class PositiveRange:
 
 ######################## GROW INFO ###################################
 
-
 @attr.s
 class GrowInfo:
     subclasses = {}
@@ -118,17 +121,23 @@ class GrowInfo:
 @GrowInfo.register_subclass('stretch')
 @attr.s
 class StretchField(GrowInfo):
+    """Stretch output percentage-wise:
+        eg: 100-200, >200, <100"""
     range = attr.ib(init=True)
     @range.validator
     def _stretch_range(self, attribute, value):
         if type(value) == str:
             if value[0] == '<':
+                print('AAA {}'.format(value))
                 self.range = PositiveRange(0, float(re.search(r'\d+', value).group()))
             elif value[0] == '>':
+                print('BBB {}'.format(value))
                 self.range = PositiveRange([float(re.search(r'\d+', value).group()), float('inf')])
             else:
+                print('CCC {}'.format(value))
                 self.range = PositiveRange([re.search(r'(\d+)-(\d+)', value).groups()])
         elif len(value) == 2:
+            print('DDD {}'.format(value))
             self.range = PositiveRange(value)
         else:
             raise ValueError("Input data for stretch should be a string or a 2-element list/tuple")
@@ -137,6 +146,8 @@ class StretchField(GrowInfo):
 @GrowInfo.register_subclass('flowering')
 @attr.s
 class FloweringField(GrowInfo):
+    """Flowering period in weeks;
+        eg: 7-9, 10-12"""
     range = attr.ib(init=True)
     @range.validator
     def _weeks_range(self, attribute, value):
@@ -155,6 +166,8 @@ class FloweringField(GrowInfo):
 @GrowInfo.register_subclass('yield')
 @attr.s
 class YieldField(GrowInfo):
+    """Yield in grams per square meter; gr/m^2
+        eg: 251-500, 100-250, 40-99"""
     range = attr.ib(init=True)
     @range.validator
     def _yield_range(self, attribute, value):
@@ -168,6 +181,8 @@ class YieldField(GrowInfo):
 @GrowInfo.register_subclass('height')
 @attr.s
 class HeightField(GrowInfo):
+    """Plant height measured in meters;
+        eg: <.75, .76-2, >2"""
     range = attr.ib(init=True)
     @range.validator
     def _height_range(self, attribute, value):

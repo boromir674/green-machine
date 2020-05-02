@@ -3,7 +3,6 @@ from collections import OrderedDict as od
 from nltk.corpus import stopwords
 
 stop_words = set(stopwords.words('english'))
-graphs_dir = os.path.dirname(os.path.realpath(__file__)) + '/../../graphs/'
 
 field2empty_obj = od({
     'type': '',
@@ -30,26 +29,7 @@ all_vars = tuple(['_id'] + [_ for _ in field2empty_obj.keys()])
 #  * 'binary-1'
 #  * 'set-real-value'
 
-# define encoding for variables
-# encoding type -> variable features
-enctype2features = {
-    'binary-1': [],
-    'binary-on-off': [
-        'type',
-        'flavors',
-        'difficulty',
-        'yield',
-        'flowering',
-        'height',
-        'stretch',
-        # 'name'
-    ],
-    'set-real-value': [
-        'effects',
-        'medical',
-        'negatives'
-    ],
-}
+
 
 #######################
 

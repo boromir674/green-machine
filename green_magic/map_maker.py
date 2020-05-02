@@ -8,8 +8,6 @@ import numpy as np
 import somoclu
 from sklearn.cluster import KMeans
 
-from . import definitions
-
 _log = logging.getLogger(__name__)
 
 
@@ -28,8 +26,9 @@ class MapMakerManager:
         self._nb_rows = None
         self._nb_cols = None
         self._dataset_id = ''
+        self.mpeta = os.path.dirname(os.path.realpath(__file__)) + '/../../graphs/'
         for figure in os.listdir(self.graphs_dir):
-            self.figures[figure.split('.')[0]] = definitions.graphs_dir + figure
+            self.figures[figure.split('.')[0]] = self.mpeta + figure
     @property
     def maps_dir(self):
         return self.graphs_dir
@@ -87,6 +86,7 @@ class MapMakerManager:
         figure_path = self.graphs_dir + '/' + map_id
         som_obj.view_umatrix(bestmatches=True, filename=figure_path)
         subprocess.call(['xdg-open', figure_path + '.png'])
+
 
     def _create_map_maker(self, map_maker_type, weed_dataset, nb_rows=20, nb_cols=20):
         for name, obj in inspect.getmembers(sys.modules[__name__]):
