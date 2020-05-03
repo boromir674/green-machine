@@ -143,4 +143,32 @@ class StrainMaster:
         self.selected_dt_id = wd_id
         return self
 
+    def mpeta(self):
+        from .strain.dataset import Dataset
+        from .strain.data.panda_handling.df_feature_factory import df_features_factory
+        from .strain.data.panda_handling.data_handler import df_receiver_factory
+        from .strain.data.commands.invoker import Invoker
+        from .strain.data.base_handling import DataHandler
+        from .strain.data import data_master
+
+        # design
+        DESIGN = {'name': 'dev-dataset',
+                  'features': ['type', 'name']}
+
+        # infra
+        invoker = Invoker()
+
+        # data
+        dataset = Dataset([[1, 2], [3, 4]], )
+        dataset.handler = DataHandler.create('df-handler')
+        features = [df_features_factory.get_feature(feat, dataset=dataset) for feat in feats]
+        dataset.features = features
+
+        def get_commands(a_dataset, features_list):
+            return []
+        commands = get_commands(dataset, features)
+
+        for c in commands:
+            invoker.execute_command(c)
+
 class InvalidDatasetSelectionError(Exception): pass

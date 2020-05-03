@@ -1,17 +1,16 @@
-
-from abc import ABCMeta, abstractmethod, ABC
-
-from interfaces.types import *
-
-import attr
-
-@attr.s
-class Feature:
-    nb_unique = attr.ib(init=False)
-    nb_unique = attr.ib(init=False)
+from abc import abstractmethod, ABC
 
 
-#
+class FeatureInterface(ABC):
+    @property
+    @abstractmethod
+    def nb_unique(self):
+        raise NotImplementedError
+
+
+
+
+
 # class RawValueExtractor(metaclass=ABCMeta):
 #     @classmethod
 #     def __subclasshook__(cls, subclass):

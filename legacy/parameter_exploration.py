@@ -30,7 +30,7 @@ assert len(parameters) == len(init_vals) == len(exploration_ranges)
 def make_filename(traj):
     """Function to create generic filenames based on what has been explored"""
     explored_parameters = traj.f_get_explored_parameters()
-    return '{}.png'.format('__'.join(map(lambda x: '{}_{}'.format(x.v_name, x.f_get()), explored_parameters.values())))
+    return '{}.png'.format('__'.join(map(lambda x: '{}_{}'.format(x.v_name, x.f_get()), explored_parameters.values(,)))
 
     # filename = ''
     # for param in explored_parameters.values():
